@@ -23,4 +23,7 @@ The url looks something like https://github.com/lichtgestalter/S1.git
 Thereafter go on with the next file.
 """
 
-print("hello world")
+print("Schools (and this includes all educational activities) influence the future of society through what they teach.")
+print("They should teach exclusively free software, so as to use their influence for the good.")
+print("To teach a proprietary program is to implant dependence, which goes against the mission of education.")
+print("By training in use of free software, schools will direct society's future towards freedom, and help talented programmers master the craft.")
