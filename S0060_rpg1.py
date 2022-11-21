@@ -26,3 +26,23 @@ Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
 
+
+class Character:
+    name: str
+    max_health: int
+    _current_health: int
+    attackpower: int
+
+    def __init__(self, name: str, max_health: int, attackpower: int):
+        self.name = name
+        self.max_health = max_health
+        self.attackpower = attackpower
+
+    def __repr__(self):
+        return f"{self.name} has {self._current_health}/{self.max_health} health, with {self.attackpower} attack power"
+
+    def hit(self, person):
+        person.get_hit(self.attackpower)
+
+    def git_hit(self, attackpower: int):
+        self._current_health -= attackpower

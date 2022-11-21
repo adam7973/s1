@@ -30,3 +30,4 @@ Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
 
+import S0061_rpg1.Character as character
