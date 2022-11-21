@@ -20,3 +20,7 @@ Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
 
+with open("data/people.txt") as file:
+    for line in file:
+        data = line.split(' ')
+        print(f"{data[0]} is {data[1].strip()} years old")
