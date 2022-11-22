@@ -28,10 +28,6 @@ Thereafter go on with the next file.
 
 
 class Character:
-    name: str
-    max_health: int
-    _current_health: int
-    attackpower: int
 
     def __init__(self, name: str, max_health: int, attackpower: int):
         self.name = name

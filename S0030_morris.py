@@ -46,14 +46,14 @@ class morris:
         self.sleepiness -= 10
         self.thirst += 1
         self.hunger += 1
-        self.check_health("morris would never wake again")
+        self._check_health("morris would never wake again")
 
     def mine(self):
         self.sleepiness += 5
         self.thirst += 5
         self.hunger += 5
         self.gold += 5
-        self.check_health("while mining morris suddenly fell over")
+        self._check_health("while mining morris suddenly fell over")
 
     def eat(self):
         if self.gold > 1:
@@ -61,11 +61,9 @@ class morris:
             self.thirst -= 5
             self.hunger -= 20
             self.gold -= 2
-            self.ensure_zero()
-            if self.sleepiness > 100:
-                print("while morris was eating he suddenly fell over.")
-                print("he had died of sleep deprivation")
-                self.die()
+            self._ensure_zero()
+            self._check_health(
+                "while morris was eating he suddenly fell over.")
         else:
             print("too poor")
 
@@ -80,6 +78,8 @@ class morris:
             self.hunger += 1
             self.whisky += 1
             self.gold -= 1
+            self._check_health(
+                "While going to the store to buy whisky morris fell over")
 
     def drink(self):
         if self.whisky > 0:
@@ -87,7 +87,8 @@ class morris:
             self.thirst -= 15
             self.hunger -= 1
             self.whisky -= 1
-            self.ensure_zero()
+            self._ensure_zero()
+            self._check_health("While taking a pause to drink morris felt bad")
         else:
             print("must have wisky")
 
@@ -101,15 +102,15 @@ class morris:
         if self.sleepiness > 100:
             print(extra)
             print("he had died of sleep deprivation")
-            self.die()
+            self._die()
         elif self.thirst > 100:
             print(extra)
             print("he had died of thirst")
-            self.die()
+            self._die()
         elif self.hunger > 100:
             print(extra)
             print("he had died of hunger")
-            self.die()
+            self._die()
 
     def _die(self):
         self.thirst = 0
@@ -123,4 +124,14 @@ class morris:
 
 
 me = morris()
+for i in range(1000):
+    if me.thirst > 50:
+        me.buy_whisky()
+        me.drink()
+    elif me.sleepiness > 50:
+        me.sleep()
+    elif me.hunger > 50:
+        me.eat()
+    else:
+        me.mine()
 print(me)

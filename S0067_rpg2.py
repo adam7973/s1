@@ -31,3 +31,9 @@ Thereafter go on with the next file.
 """
 
 import S0061_rpg1.Character as character
+
+
+class Hunter(character):
+
+    def __init__(self, name, health, attackpower):
+        super().__init__(name, health, attackpower)
