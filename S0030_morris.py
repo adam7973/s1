@@ -46,6 +46,7 @@ class morris:
         self.sleepiness -= 10
         self.thirst += 1
         self.hunger += 1
+        self._ensure_zero()
         self._check_health("morris would never wake again")
 
     def mine(self):
@@ -70,7 +71,7 @@ class morris:
     def buy_whisky(self):
         if self.whisky == 10:
             print("morris already has 10 whisky, he cant carry more")
-        elif self.gold < 0:
+        elif self.gold < 1:
             print("too poor")
         else:
             self.sleepiness += 5
@@ -97,6 +98,8 @@ class morris:
             self.thirst = 0
         if self.hunger < 0:
             self.hunger = 0
+        if self.sleepiness < 0:
+            self.sleepiness = 0
 
     def _check_health(self, extra: str):
         if self.sleepiness > 100:
@@ -126,12 +129,16 @@ class morris:
 me = morris()
 for i in range(1000):
     if me.thirst > 50:
-        me.buy_whisky()
         me.drink()
     elif me.sleepiness > 50:
         me.sleep()
     elif me.hunger > 50:
         me.eat()
+    elif me.whisky == 0 and me.gold > 1:
+        me.buy_whisky()
     else:
         me.mine()
+    print(
+        f"sleepiness= {me.sleepiness}  thirst= {me.thirst}  hunger= {me.hunger}  whisky= {me.whisky}  gold= {me.gold}"
+    )
 print(me)

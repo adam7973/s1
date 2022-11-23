@@ -23,3 +23,18 @@ Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
 
+
+def motor_sound():
+    print("vroooom")
+
+
+car1_wheels = 4
+car2_wheels = 4
+car1_maxspeed = 100
+car2_maxspeed = 80
+
+print(car1_wheels)
+print(car1_maxspeed)
+print(car2_wheels)
+print(car2_maxspeed)
+motor_sound()
