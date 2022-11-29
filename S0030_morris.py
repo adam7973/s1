@@ -138,7 +138,4 @@ for i in range(1000):
         me.buy_whisky()
     else:
         me.mine()
-    print(
-        f"sleepiness= {me.sleepiness}  thirst= {me.thirst}  hunger= {me.hunger}  whisky= {me.whisky}  gold= {me.gold}"
-    )
 print(me)
