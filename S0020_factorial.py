@@ -32,7 +32,16 @@ Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
 
+
 #  Write your function below this line.
+def factorial(number):
+    result = 1
+    for i in range(1, number + 1):
+        result = result * i
+    return result
 
 
 # Here starts the main program. From the main program you can call your functions.
+factorial_input = 6
+factorial_result = factorial(factorial_input)
+print(f"{factorial_input}! = {factorial_result}")

@@ -26,7 +26,11 @@ Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
 
+
 #  Write your function below this line.
+def double_this(number):
+    double_number = number * 2
+    return double_number
 
 
 # Here starts the main program. From the main program you can call your functions.

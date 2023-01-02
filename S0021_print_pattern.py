@@ -41,7 +41,18 @@ Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
 
+
 #  Write your functions below this line.
+def print_repeatedly(string, repetitions):
+    for i in range(repetitions + 1):
+        print(string, end="")
+    print()
+
+
+def print_pattern(string, repetition_list):
+    for repetition in repetition_list:
+        print_repeatedly(string, repetition)
 
 
 # Here starts the main program. From the main program you can call your functions.
+print_pattern("abc", [4, 2, 1])
