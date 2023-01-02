@@ -1,5 +1,5 @@
 """
-Exercise "The inventory sequence"
+Exercise "Animals"
 
 As always, read the whole exercise description carefully before you begin to solve the exercise.
 
@@ -43,3 +43,4 @@ When your program is complete, push it to your github repository.
 Then send this Teams message to your teacher: <filename> done
 Thereafter go on with the next file.
 """
+

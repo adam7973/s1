@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+import danskcargo_data as dcd
+import danskcargo_sql as dcsql
 
 # region global constants
 padx = 8  # Horizontal distance to neighboring objects
@@ -10,36 +12,8 @@ treeview_foreground = "black"  # color of foreground in treeview
 treeview_selected = "#206030"  # color of selected row in treeview
 oddrow = "#dddddd"  # color of odd row in treeview
 evenrow = "#cccccc"  # color of even row in treeview
-INTERNAL_ERROR_CODE = 0
-
 
 # endregion global constants
-
-class Container:
-
-    def __init__(self, id, weight, destination):
-        self.id = id
-        self.weight = weight
-        self.destination = destination
-
-    def __repr__(self):  # Optional. Only for test purposes.
-        return f"Container({self.id=:4}    {self.weight=:16}    {self.destination=})"
-
-    def convert_to_tuple(self):  # Convert Container to tuple
-        return self.id, self.weight, self.destination
-
-    def valid(self):
-        try:
-            value = int(self.weight)
-        except ValueError:
-            return False
-        return value >= 0
-
-    @classmethod
-    def convert_from_tuple(cls, tuple_):  # Convert tuple to Container
-        container = cls(id=tuple_[0], weight=tuple_[1], destination=tuple_[2])
-        return container
-
 
 # region container functions
 
@@ -69,34 +43,30 @@ def edit_container(event, tree):  # Copy selected tuple into entry boxes. Parame
 
 
 def create_container(tree, record):  # add new tuple to database
-    container = Container.convert_from_tuple(record)  # Convert tuple to Container
-    container_list.append(container)  # add container to database
+    container = dcd.Container.convert_from_tuple(record)  # Convert tuple to Container
+    dcsql.create_record(container)  # Update database
     clear_container_entries()  # Clear entry boxes
-    refresh_treeview(tree)  # Refresh treeview table
+    refresh_treeview(tree, dcd.Container)  # Refresh treeview table
 
 
 def update_container(tree, record):  # update tuple in database
-    container = Container.convert_from_tuple(record)  # Convert tuple to Container
-    for c in container_list:  # Update database
-        if c.id == container.id:
-            c.weight = container.weight
-            c.destination = container.destination
+    container = dcd.Container.convert_from_tuple(record)  # Convert tuple to Container
+    dcsql.update_container(container)  # Update database
     clear_container_entries()  # Clear entry boxes
-    refresh_treeview(tree)  # Refresh treeview table
+    refresh_treeview(tree, dcd.Container)  # Refresh treeview table
 
 
 def delete_container(tree, record):  # delete tuple in database
-    container = Container.convert_from_tuple(record)  # Convert tuple to Container
-    for c in container_list:  # Update database
-        if c.id == container.id:
-            c.weight = -1
+    container = dcd.Container.convert_from_tuple(record)  # Convert tuple to Container
+    dcsql.delete_soft_container(container)  # Update database
     clear_container_entries()  # Clear entry boxes
-    refresh_treeview(tree)  # Refresh treeview table
+    refresh_treeview(tree, dcd.Container)  # Refresh treeview table
 
 
-def read_table(tree):  # fill tree from database
+def read_table(tree, class_):  # fill tree from database
     count = 0  # Used to keep track of odd and even rows, because these will be colored differently.
-    for record in container_list:  # Read all containers from database
+    result = dcsql.select_all(class_)  # Read all containers from database
+    for record in result:
         if record.valid():  # this condition excludes soft deleted records from being shown in the data table
             if count % 2 == 0:  # even
                 tree.insert(parent='', index='end', iid=str(count), text='', values=record.convert_to_tuple(), tags=('evenrow',))  # Insert one row into the data table
@@ -107,30 +77,23 @@ def read_table(tree):  # fill tree from database
 
 # endregion container functions
 
-container_list = []
-container_list.append(Container("1", "1000", "oslo"))
-container_list.append(Container("2", "2000", "chicago"))
-container_list.append(Container("3", "3000", "milano"))
-container_list.append(Container("4", "4000", "amsterdam"))
-
-
 # region common functions
 
-def refresh_treeview(tree):  # Refresh treeview table
+def refresh_treeview(tree, class_):  # Refresh treeview table
     empty_treeview(tree)  # Clear treeview table
-    read_table(tree)  # Fill treeview from database
+    read_table(tree, class_)  # Fill treeview from database
 
 
 def empty_treeview(tree):  # Clear treeview table
     tree.delete(*tree.get_children())
 
-
 # endregion common functions
 
+
 # region common widgets
-root = tk.Tk()  # Define the main window
-root.title('my first GUI')  # Text shown in the top window bar
-root.geometry("500x500")  # window size
+main_window = tk.Tk()  # Define the main window
+main_window.title('AspIT S2: DanskCargo')  # Text shown in the top window bar
+main_window.geometry("500x500")  # window size
 
 style = ttk.Style()  # Add style
 style.theme_use('default')  # Pick theme
@@ -143,7 +106,7 @@ style.map('Treeview', background=[('selected', treeview_selected)])  # Define co
 
 # region container widgets
 # Define Labelframe which contains all container related GUI objects (data table, labels, buttons, ...)
-frame_container = tk.LabelFrame(root, text="Container")  # https://www.tutorialspoint.com/python/tk_labelframe.htm
+frame_container = tk.LabelFrame(main_window, text="Container")  # https://www.tutorialspoint.com/python/tk_labelframe.htm
 frame_container.grid(row=0, column=0, padx=padx, pady=pady, sticky=tk.N)  # https://www.tutorialspoint.com/python/tk_grid.htm
 
 # Define data table (Treeview) and its scrollbar. Put them in a Frame.
@@ -175,7 +138,7 @@ controls_frame_container = tk.Frame(frame_container)
 controls_frame_container.grid(row=3, column=0, padx=padx, pady=pady)
 
 # Define Frame which contains labels (text fields) and entries (input fields)
-edit_frame_container = tk.Label(controls_frame_container)  # Add tuple entry boxes
+edit_frame_container = tk.Frame(controls_frame_container)  # Add tuple entry boxes
 edit_frame_container.grid(row=0, column=0, padx=padx, pady=pady)
 # label and entry for container id
 label_container_id = tk.Label(edit_frame_container, text="Id")  # https://www.tutorialspoint.com/python/tk_label.htm
@@ -199,7 +162,7 @@ entry_container_weather = tk.Entry(edit_frame_container, width=14)
 entry_container_weather.grid(row=1, column=3, padx=padx, pady=pady)
 
 # Define Frame which contains buttons
-button_frame_container = tk.Label(controls_frame_container)
+button_frame_container = tk.Frame(controls_frame_container)
 button_frame_container.grid(row=1, column=0, padx=padx, pady=pady)
 # Define buttons
 button_create_container = tk.Button(button_frame_container, text="Create", command=lambda: create_container(tree_container, read_container_entries()))
@@ -213,6 +176,6 @@ select_record_button.grid(row=0, column=4, padx=padx, pady=pady)
 
 # endregion container widgets
 
-refresh_treeview(tree_container)  # Load data from database
-if __name__ == "__main__":  # Executed when invoked directly. We use this so root.mainloop() does not keep our unit tests from running.
-    root.mainloop()  # Wait for button clicks and act upon them
+if __name__ == "__main__":  # Executed when invoked directly. We use this so main_window.mainloop() does not keep our unit tests from running.
+    refresh_treeview(tree_container, dcd.Container)  # Load data from database
+    main_window.mainloop()  # Wait for button clicks and act upon them
