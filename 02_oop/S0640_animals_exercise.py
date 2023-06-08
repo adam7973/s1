@@ -5,7 +5,7 @@ Som altid skal du læse hele øpgavebeskrivelsen omhyggeligt, før du begynder a
 
 Kopier denne fil til din egen løsningsmappe. Skriv din løsning ind i kopien.
 
-Alt, hvad du har brug for at vide for at løse denne opgave, finder du i cars_oop- og rpg1-filerne.
+Alt, hvad du har brug for at vide for at løse denne opgave, finder du i cars_oop-filerne.
 
 Definer en klasse ved navn Animal.
 Hvert objekt i denne klasse skal have attributterne name (str), sound (str), height (float),
@@ -36,6 +36,7 @@ Kald denne metode i hovedprogrammet.
 Skriv en funktion mate(mother, father). Begge parametre er af typen Dog.
 Denne funktion skal returnere et nyt objekt af typen Dog.
 I denne funktion skal du lave meningsfulde regler for den nye hunds attributter.
+Hvis du har lyst, brug random numbers så mate() producerer tilfældige hunde.
 Sørg for, at denne funktion kun accepterer hunde med det korrekte køn som argumenter.
 
 I hovedprogrammet kalder du denne metode og udskriver den nye hund.
