@@ -11,7 +11,7 @@ import tkinter as tk  # import the GUI library
 # Define the main window, its title text and its size
 # These first 3 lines are typically roughly the same in every tkinter GUI
 main_window = tk.Tk()  # create the main window
-main_window.title('my first GUI')  # text shown in the top window bar
+main_window.title("my first GUI")  # text shown in the top window bar
 main_window.geometry("500x500")  # window size
 
 # Create a button
